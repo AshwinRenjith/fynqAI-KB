@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/ingest/worker?batch=3",
+      "schedule": "* * * * *"
+    }
+  ]
+}
