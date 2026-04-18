@@ -10,8 +10,10 @@ import {
     ShieldAlert,
     LogOut,
     User,
+    X,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { useEffect } from 'react';
 
 const NAV_ITEMS = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -24,6 +26,8 @@ interface SidebarProps {
     openContradictions?: number;
     userEmail: string;
     workspaceName: string;
+    mobileOpen?: boolean;
+    onMobileClose?: () => void;
 }
 
 function initialsFromEmail(email: string) {
@@ -31,9 +35,15 @@ function initialsFromEmail(email: string) {
     return local.replace(/[^a-zA-Z]/g, '').slice(0, 2).toUpperCase() || 'US';
 }
 
-export function Sidebar({ openContradictions = 0, userEmail, workspaceName }: SidebarProps) {
+export function Sidebar({ openContradictions = 0, userEmail, workspaceName, mobileOpen = false, onMobileClose }: SidebarProps) {
     const pathname = usePathname();
     const router = useRouter();
+
+    // Close sidebar on route change (mobile)
+    useEffect(() => {
+        onMobileClose?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]);
 
     const onSignOut = async () => {
         const supabase = createClient();
@@ -42,15 +52,23 @@ export function Sidebar({ openContradictions = 0, userEmail, workspaceName }: Si
         router.refresh();
     };
 
-    return (
-        <aside className="fixed left-0 top-0 bottom-0 w-[var(--sidebar-width)] bg-fynq-ink border-r border-fynq-steel flex flex-col z-50 backdrop-blur-xl">
+    const sidebarContent = (
+        <>
             {/* ── Logo Section ── */}
-            <div className="h-[var(--topnav-height)] flex items-center px-8 border-b border-fynq-steel">
-                <Link href="/dashboard" className="flex items-center gap-0.5 group">
+            <div className="h-[var(--topnav-height)] flex items-center justify-between px-8 border-b border-fynq-steel">
+                <Link href="/dashboard" className="flex items-center gap-0.5 group" onClick={onMobileClose}>
                     <span className="text-fynq-red font-display italic text-2xl font-bold transition-transform group-hover:scale-110 duration-300">f</span>
                     <span className="font-ui text-[18px] font-medium text-fynq-chalk tracking-tight">ynq</span>
                     <span className="font-display italic text-[18px] font-medium text-fynq-fog">AI</span>
                 </Link>
+                {/* Close button — only visible on mobile */}
+                <button
+                    onClick={onMobileClose}
+                    className="md:hidden p-2 -mr-2 rounded-xl text-fynq-fog hover:text-fynq-pure hover:bg-white/[0.05] transition-all"
+                    aria-label="Close sidebar"
+                >
+                    <X className="w-5 h-5" />
+                </button>
             </div>
 
             {/* ── Navigation ── */}
@@ -116,6 +134,44 @@ export function Sidebar({ openContradictions = 0, userEmail, workspaceName }: Si
                     Sign Out
                 </button>
             </div>
-        </aside>
+        </>
+    );
+
+    return (
+        <>
+            {/* ── Desktop Sidebar (always visible >= md) ── */}
+            <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-[var(--sidebar-width)] bg-fynq-ink border-r border-fynq-steel flex-col z-50 backdrop-blur-xl">
+                {sidebarContent}
+            </aside>
+
+            {/* ── Mobile Sidebar Overlay ── */}
+            <AnimatePresence>
+                {mobileOpen && (
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            key="sidebar-backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="md:hidden fixed inset-0 bg-fynq-void/70 backdrop-blur-sm z-[90]"
+                            onClick={onMobileClose}
+                        />
+                        {/* Drawer */}
+                        <motion.aside
+                            key="sidebar-drawer"
+                            initial={{ x: '-100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '-100%' }}
+                            transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                            className="md:hidden fixed left-0 top-0 bottom-0 w-[280px] max-w-[85vw] bg-fynq-ink border-r border-fynq-steel flex flex-col z-[100] shadow-2xl"
+                        >
+                            {sidebarContent}
+                        </motion.aside>
+                    </>
+                )}
+            </AnimatePresence>
+        </>
     );
 }

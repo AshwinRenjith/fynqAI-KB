@@ -29,7 +29,7 @@ export function ContradictionCard({ contradiction, docAName, docBName, onResolve
             className={`card-elevated overflow-hidden group transition-all duration-300 ${isCritical ? 'border-fynq-red/30 bg-fynq-red/[0.01]' : ''
                 }`}
         >
-            <div className="p-6 md:p-8 space-y-8">
+            <div className="p-4 md:p-6 lg:p-8 space-y-6 md:space-y-8">
                 {/* Header Section */}
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-3">
@@ -54,13 +54,13 @@ export function ContradictionCard({ contradiction, docAName, docBName, onResolve
                                 TYPE: {contradiction.contradiction_type}
                             </span>
                         </div>
-                        <h3 className="font-ui text-xl font-bold text-fynq-pure tracking-tight">
+                        <h3 className="font-ui text-base md:text-xl font-bold text-fynq-pure tracking-tight">
                             Discrepancy in <span className="text-fynq-red italic">&quot;{contradiction.entity_subject}&quot;</span>
                         </h3>
                     </div>
-                    <div className="text-right">
+                    <div className="text-right shrink-0">
                         <div className="text-[10px] font-bold text-fynq-ash uppercase tracking-widest mb-1 opacity-50">Audit Trust</div>
-                        <div className={`font-display text-3xl font-medium ${contradiction.confidence > 0.9 ? 'text-fynq-resolved' : 'text-fynq-chalk'}`}>
+                        <div className={`font-display text-2xl md:text-3xl font-medium ${contradiction.confidence > 0.9 ? 'text-fynq-resolved' : 'text-fynq-chalk'}`}>
                             {Math.round(contradiction.confidence * 100)}%
                         </div>
                     </div>
@@ -69,24 +69,24 @@ export function ContradictionCard({ contradiction, docAName, docBName, onResolve
                 {/* Conflict Comparison Area */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-fynq-steel border border-fynq-steel rounded-2xl overflow-hidden shadow-inner">
                     {/* Source A */}
-                    <div className="bg-fynq-ink p-6 md:p-8 space-y-4 relative group/a">
+                    <div className="bg-fynq-ink p-4 md:p-6 lg:p-8 space-y-4 relative group/a">
                         <div className="flex items-center gap-2 mb-2">
                             <FileText className="w-4 h-4 text-fynq-red opacity-50" />
                             <span className="text-[11px] font-bold text-fynq-ash uppercase tracking-widest">{docAName}</span>
                         </div>
-                        <div className="text-fynq-mist font-ui text-[15px] leading-relaxed relative z-10">
+                        <div className="text-fynq-mist font-ui text-[13px] md:text-[15px] leading-relaxed relative z-10">
                             {contradiction.value_a}
                             <div className="absolute -left-4 top-0 bottom-0 w-1 bg-fynq-red opacity-20 group-hover/a:opacity-100 transition-opacity" />
                         </div>
                     </div>
 
                     {/* Source B */}
-                    <div className="bg-fynq-ink p-6 md:p-8 space-y-4 relative group/b">
+                    <div className="bg-fynq-ink p-4 md:p-6 lg:p-8 space-y-4 relative group/b">
                         <div className="flex items-center gap-2 mb-2">
                             <FileText className="w-4 h-4 text-fynq-red opacity-50" />
                             <span className="text-[11px] font-bold text-fynq-ash uppercase tracking-widest">{docBName}</span>
                         </div>
-                        <div className="text-fynq-mist font-ui text-[15px] leading-relaxed relative z-10">
+                        <div className="text-fynq-mist font-ui text-[13px] md:text-[15px] leading-relaxed relative z-10">
                             {contradiction.value_b}
                             <div className="absolute -left-4 top-0 bottom-0 w-1 bg-fynq-red opacity-20 group-hover/b:opacity-100 transition-opacity" />
                         </div>
@@ -117,10 +117,10 @@ export function ContradictionCard({ contradiction, docAName, docBName, onResolve
                         </label>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                    <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                         <button
                             onClick={() => onResolve(contradiction.id, 'dismiss')}
-                            className="flex-1 sm:flex-none px-6 py-2.5 h-11 bg-white/[0.03] border border-fynq-steel rounded-xl text-fynq-ash font-ui text-[13px] font-bold hover:text-white hover:border-fynq-iron transition-all"
+                            className="sm:flex-none px-6 py-2.5 h-11 bg-white/[0.03] border border-fynq-steel rounded-xl text-fynq-ash font-ui text-[13px] font-bold hover:text-white hover:border-fynq-iron transition-all text-center"
                         >
                             Dismiss
                         </button>
@@ -130,7 +130,7 @@ export function ContradictionCard({ contradiction, docAName, docBName, onResolve
                                     deprecateLosingDocument,
                                 })
                             }
-                            className="flex-1 sm:flex-none px-4 py-2.5 h-11 bg-fynq-red border border-fynq-crimson rounded-xl text-white font-ui text-[12px] font-bold uppercase tracking-widest shadow-xl shadow-fynq-red/20 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                            className="sm:flex-none px-4 py-2.5 h-11 bg-fynq-red border border-fynq-crimson rounded-xl text-white font-ui text-[11px] md:text-[12px] font-bold uppercase tracking-widest shadow-xl shadow-fynq-red/20 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                         >
                             <CheckCircle2 className="w-4 h-4" />
                             Mark A Correct ({shortDocA})
@@ -141,7 +141,7 @@ export function ContradictionCard({ contradiction, docAName, docBName, onResolve
                                     deprecateLosingDocument,
                                 })
                             }
-                            className="flex-1 sm:flex-none px-4 py-2.5 h-11 bg-fynq-red border border-fynq-crimson rounded-xl text-white font-ui text-[12px] font-bold uppercase tracking-widest shadow-xl shadow-fynq-red/20 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                            className="sm:flex-none px-4 py-2.5 h-11 bg-fynq-red border border-fynq-crimson rounded-xl text-white font-ui text-[11px] md:text-[12px] font-bold uppercase tracking-widest shadow-xl shadow-fynq-red/20 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                         >
                             <CheckCircle2 className="w-4 h-4" />
                             Mark B Correct ({shortDocB})

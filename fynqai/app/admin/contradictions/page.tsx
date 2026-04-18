@@ -45,7 +45,7 @@ export default function ContradictionsPage() {
                 variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
-                className="space-y-12 pb-24"
+                className="space-y-8 md:space-y-12 pb-24"
             >
                 {/* ── Page Header ── */}
                 <motion.div variants={staggerItem} className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -54,21 +54,21 @@ export default function ContradictionsPage() {
                             <div className="w-2 h-2 rounded-full bg-fynq-red animate-pulse" />
                             <span className="font-ui text-[11px] font-bold text-fynq-red uppercase tracking-widest">Audit Active</span>
                         </div>
-                        <h1 className="font-ui text-4xl font-bold tracking-tight text-fynq-chalk">Audit Resolution Hub</h1>
-                        <p className="font-ui text-fynq-fog text-[15px] max-w-[550px] leading-relaxed">
+                        <h1 className="font-ui text-2xl md:text-4xl font-bold tracking-tight text-fynq-chalk">Audit Resolution Hub</h1>
+                        <p className="font-ui text-fynq-fog text-[13px] md:text-[15px] max-w-[550px] leading-relaxed">
                             Below are the identified inconsistencies across your governance stack. Resolve them to ensure your knowledge base remains the single source of truth.
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
                         <button
                             onClick={() => rescanMutation.mutate(undefined)}
                             disabled={rescanMutation.isPending}
-                            className="px-5 py-2.5 h-11 bg-fynq-red/10 border border-fynq-red/30 rounded-xl text-fynq-red font-ui text-[13px] font-bold flex items-center gap-2 hover:bg-fynq-red hover:text-fynq-bone transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 md:px-5 py-2.5 h-11 bg-fynq-red/10 border border-fynq-red/30 rounded-xl text-fynq-red font-ui text-[12px] md:text-[13px] font-bold flex items-center gap-2 hover:bg-fynq-red hover:text-fynq-bone transition-all shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {rescanMutation.isPending ? 'Re-scanning...' : 'Re-Run Contradiction Scan'}
                         </button>
-                        <button className="px-5 py-2.5 h-11 bg-fynq-obsidian/5 border border-fynq-steel rounded-xl text-fynq-ash font-ui text-[13px] font-bold flex items-center gap-2 hover:border-fynq-iron transition-all shadow-xl">
+                        <button className="hidden sm:flex px-5 py-2.5 h-11 bg-fynq-obsidian/5 border border-fynq-steel rounded-xl text-fynq-ash font-ui text-[13px] font-bold items-center gap-2 hover:border-fynq-iron transition-all shadow-xl">
                             <History className="w-4 h-4" />
                             View Audit History
                         </button>
@@ -76,8 +76,8 @@ export default function ContradictionsPage() {
                 </motion.div>
 
                 {/* ── Contradiction Quick Stats ── */}
-                <motion.div variants={staggerItem} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="card-elevated p-8 border-fynq-red/20 bg-fynq-red/[0.01]">
+                <motion.div variants={staggerItem} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                    <div className="card-elevated p-5 md:p-8 border-fynq-red/20 bg-fynq-red/[0.01]">
                         <div className="flex items-center justify-between mb-4">
                             <div className="w-10 h-10 rounded-xl bg-fynq-red/10 flex items-center justify-center">
                                 <ShieldAlert className="w-5 h-5 text-fynq-red" />
@@ -88,7 +88,7 @@ export default function ContradictionsPage() {
                         <p className="font-ui text-xs text-fynq-ash font-bold uppercase tracking-tight">Open Critical Conflicts</p>
                     </div>
 
-                    <div className="card-elevated p-8 border-fynq-warning/20">
+                    <div className="card-elevated p-5 md:p-8 border-fynq-warning/20">
                         <div className="flex items-center justify-between mb-4">
                             <div className="w-10 h-10 rounded-xl bg-fynq-warning/10 flex items-center justify-center">
                                 <AlertTriangle className="w-5 h-5 text-fynq-warning" />
@@ -99,7 +99,7 @@ export default function ContradictionsPage() {
                         <p className="font-ui text-xs text-fynq-ash font-bold uppercase tracking-tight">Warning Discrepancies</p>
                     </div>
 
-                    <div className="card-elevated p-8 border-fynq-resolved/20">
+                    <div className="card-elevated p-5 md:p-8 border-fynq-resolved/20">
                         <div className="flex items-center justify-between mb-4">
                             <div className="w-10 h-10 rounded-xl bg-fynq-resolved/10 flex items-center justify-center">
                                 <CheckCircle2 className="w-5 h-5 text-fynq-resolved" />
@@ -134,7 +134,7 @@ export default function ContradictionsPage() {
                 </motion.div>
 
                 {/* ── Contradiction List ── */}
-                <div className="space-y-8">
+                <div className="space-y-6 md:space-y-8">
                     {openTotal > items.length && (
                         <div className="px-1 text-[12px] font-ui text-fynq-fog">
                             Showing latest {items.length} of {openTotal} open contradictions.

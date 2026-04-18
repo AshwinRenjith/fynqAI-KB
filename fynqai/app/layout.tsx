@@ -33,8 +33,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className="dark scroll-smooth">
-            <body className={`${fontDisplay.variable} ${fontUi.variable} ${fontMono.variable} font-ui antialiased selection:bg-fynq-red/30 bg-fynq-void overflow-x-hidden`}>
+        <html lang="en" className="dark scroll-smooth" suppressHydrationWarning>
+            <body className={`${fontDisplay.variable} ${fontUi.variable} ${fontMono.variable} font-ui antialiased selection:bg-fynq-red/30 bg-fynq-void overflow-x-hidden`} suppressHydrationWarning>
                 {/* ── Noise Texture Overlay §9 ── */}
                 <div
                     className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] mix-blend-overlay"

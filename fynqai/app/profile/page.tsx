@@ -76,20 +76,20 @@ export default function ProfilePage() {
             >
                 {/* ── Heading ── */}
                 <motion.div variants={staggerItem} className="flex flex-col gap-2">
-                    <h2 className="font-display italic text-4xl text-fynq-silver">Your</h2>
-                    <h1 className="font-ui text-5xl font-bold text-fynq-chalk tracking-tight">Profile</h1>
+                    <h2 className="font-display italic text-2xl md:text-4xl text-fynq-silver">Your</h2>
+                    <h1 className="font-ui text-3xl md:text-5xl font-bold text-fynq-chalk tracking-tight">Profile</h1>
                 </motion.div>
 
                 {/* ── Profile Card ── */}
-                <motion.div variants={staggerItem} className="card-elevated p-8 md:p-10">
-                    <div className="flex items-start gap-6">
+                <motion.div variants={staggerItem} className="card-elevated p-6 md:p-8 lg:p-10">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6">
                         {/* Avatar */}
-                        <div className="w-20 h-20 rounded-2xl bg-fynq-graphite border border-fynq-steel flex items-center justify-center text-fynq-silver text-2xl font-bold shadow-inner shrink-0">
+                        <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-fynq-graphite border border-fynq-steel flex items-center justify-center text-fynq-silver text-xl md:text-2xl font-bold shadow-inner shrink-0">
                             {initials}
                         </div>
 
-                        <div className="flex-1 min-w-0">
-                            <h3 className="font-ui text-2xl font-bold text-fynq-chalk truncate">
+                        <div className="flex-1 min-w-0 text-center sm:text-left">
+                            <h3 className="font-ui text-xl md:text-2xl font-bold text-fynq-chalk truncate">
                                 {profile.email.split('@')[0]}
                             </h3>
                             <p className="font-ui text-sm text-fynq-fog mt-1">{profile.email}</p>
@@ -105,7 +105,7 @@ export default function ProfilePage() {
                 </motion.div>
 
                 {/* ── Details Grid ── */}
-                <motion.div variants={staggerItem} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div variants={staggerItem} className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <DetailCard
                         icon={Mail}
                         label="Email Address"

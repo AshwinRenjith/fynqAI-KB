@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import { NextResponse } from 'next/server';
 
+import { runIngestionPipeline } from '@/lib/ingestion/pipeline';
 import { enqueueIngestionJob } from '@/lib/ingestion/queue';
 import { createServerClient } from '@/lib/supabase/server';
 
@@ -90,17 +91,38 @@ export async function POST(request: Request) {
 
   try {
     await enqueueIngestionJob(documentId, workspaceId);
-  } catch {
-    await supabase
-      .from('documents')
-      .update({
-        status: 'error',
-        error_message: 'Queue enqueue failed. Please retry upload.',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', documentId);
+  } catch (error) {
+    console.error('[ingest/upload] Failed to enqueue ingestion job', {
+      documentId,
+      workspaceId,
+      message: error instanceof Error ? error.message : 'Unknown error',
+    });
 
-    return NextResponse.json({ error: 'Upload succeeded but queueing failed' }, { status: 500 });
+    // Fallback mode: keep uploads functional even if queue infra is misconfigured.
+    const stream = new TransformStream();
+    const writer = stream.writable.getWriter();
+
+    runIngestionPipeline(documentId, workspaceId, fileBuffer, ext, file.name)
+      .finally(() => writer.close())
+      .catch((pipelineError) => {
+        console.error('[ingest/upload] Inline fallback ingestion failed', {
+          documentId,
+          workspaceId,
+          message: pipelineError instanceof Error ? pipelineError.message : 'Unknown error',
+        });
+      });
+
+    const response = new Response(stream.readable, {
+      status: 202,
+      headers: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-transform',
+        Connection: 'keep-alive',
+        'X-Document-Id': documentId,
+      },
+    });
+    response.headers.set('X-Ingestion-Mode', 'inline-fallback');
+    return response;
   }
 
   const response = NextResponse.json({ id: documentId, queued: true }, { status: 202 });

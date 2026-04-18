@@ -14,7 +14,7 @@ export function PageWrapper({ children }: PageWrapperProps) {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="relative flex-1 p-8 md:p-12 overflow-y-auto overflow-x-hidden min-h-[calc(100vh-var(--topnav-height))]"
+            className="relative flex-1 p-4 sm:p-6 md:p-8 lg:p-12 overflow-y-auto overflow-x-hidden min-h-[calc(100vh-var(--topnav-height))]"
         >
             {/* ── Ambient Glow Fixes [design §5] ── */}
             <div className="absolute top-[-10vh] left-1/4 right-1/4 h-[40vh] bg-fynq-red/5 blur-[120px] pointer-events-none rounded-full" />

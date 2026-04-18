@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Bell, Search } from 'lucide-react';
+import { Bell, Search, Menu } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { SearchPalette } from './SearchPalette';
 
@@ -10,9 +10,10 @@ interface TopNavProps {
     openContradictions?: number;
     workspaceName: string;
     role: 'admin' | 'member';
+    onMenuClick?: () => void;
 }
 
-export function TopNav({ title, openContradictions = 0, workspaceName, role }: TopNavProps) {
+export function TopNav({ title, openContradictions = 0, workspaceName, role, onMenuClick }: TopNavProps) {
     const [searchOpen, setSearchOpen] = useState(false);
 
     const openSearch = useCallback(() => setSearchOpen(true), []);
@@ -32,13 +33,24 @@ export function TopNav({ title, openContradictions = 0, workspaceName, role }: T
 
     return (
         <>
-        <header className="sticky top-0 right-0 h-[var(--topnav-height)] border-b border-fynq-steel bg-fynq-ink backdrop-blur-3xl z-40 flex items-center justify-between px-8 transition-all duration-500">
-            {/* ── Page Title ── */}
-            <h1 className="font-ui text-[18px] font-semibold text-fynq-chalk tracking-tight">{title}</h1>
+        <header className="sticky top-0 right-0 h-[var(--topnav-height)] border-b border-fynq-steel bg-fynq-ink backdrop-blur-3xl z-40 flex items-center justify-between px-4 md:px-8 transition-all duration-500 gap-3">
+            {/* ── Left: Hamburger (mobile) + Page Title ── */}
+            <div className="flex items-center gap-3 min-w-0">
+                {/* Hamburger — visible only on mobile */}
+                <button
+                    onClick={onMenuClick}
+                    className="md:hidden p-2 -ml-1 rounded-xl text-fynq-fog hover:text-fynq-pure hover:bg-white/[0.05] transition-all shrink-0"
+                    aria-label="Open navigation"
+                >
+                    <Menu className="w-5 h-5" strokeWidth={1.5} />
+                </button>
+
+                <h1 className="font-ui text-[16px] md:text-[18px] font-semibold text-fynq-chalk tracking-tight truncate">{title}</h1>
+            </div>
 
             {/* ── Actions ── */}
-            <div className="flex items-center gap-6">
-                {/* Search Bar */}
+            <div className="flex items-center gap-2 md:gap-6 shrink-0">
+                {/* Search Bar — hidden on mobile, replaced with icon */}
                 <button
                     onClick={openSearch}
                     className="hidden md:flex items-center h-10 w-[240px] px-4 rounded-xl border border-fynq-steel bg-white/[0.03] text-fynq-fog hover:border-fynq-iron hover:bg-white/[0.05] transition-all group cursor-pointer"
@@ -48,7 +60,16 @@ export function TopNav({ title, openContradictions = 0, workspaceName, role }: T
                     <kbd className="hidden lg:inline font-mono text-[10px] text-fynq-fog/40 border border-fynq-steel rounded px-1.5 py-0.5 bg-fynq-graphite/50">⌘K</kbd>
                 </button>
 
-                {/* Theme Switcher [Claude-inspired Light Mode] */}
+                {/* Mobile search icon */}
+                <button
+                    onClick={openSearch}
+                    className="md:hidden p-2 rounded-xl text-fynq-fog hover:text-fynq-chalk hover:bg-white/[0.05] transition-all"
+                    aria-label="Search"
+                >
+                    <Search className="w-5 h-5" strokeWidth={1.5} />
+                </button>
+
+                {/* Theme Switcher */}
                 <ThemeToggle />
 
                 {/* Notification Bell */}
@@ -59,9 +80,9 @@ export function TopNav({ title, openContradictions = 0, workspaceName, role }: T
                     )}
                 </button>
 
-                {/* Workspace Avatar */}
-                <div className="flex items-center gap-3 pl-4 border-l border-fynq-steel">
-                    <div className="text-right hidden sm:block">
+                {/* Workspace Avatar — hide text on small screens */}
+                <div className="hidden sm:flex items-center gap-3 pl-4 border-l border-fynq-steel">
+                    <div className="text-right hidden lg:block">
                         <p className="font-ui text-[12px] font-bold text-fynq-chalk tracking-tight">{workspaceName}</p>
                         <p className="font-ui text-[10px] text-fynq-red font-semibold uppercase tracking-widest">{role}</p>
                     </div>

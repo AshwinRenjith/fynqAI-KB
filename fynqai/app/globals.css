@@ -121,6 +121,22 @@
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
         min-height: 100vh;
+        min-height: 100dvh;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Touch-friendly targets on mobile */
+    @media (pointer: coarse) {
+        button, a, [role="button"] {
+            touch-action: manipulation;
+        }
+    }
+
+    /* Safe area padding for notched devices */
+    @supports (padding: env(safe-area-inset-bottom)) {
+        .sticky.bottom-0 {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 1.5rem);
+        }
     }
 
     /* Custom Scrollbar */
@@ -139,6 +155,17 @@
 
     ::-webkit-scrollbar-thumb:hover {
         background: var(--color-iron);
+    }
+
+    /* Hide scrollbar on mobile for cleaner look */
+    @media (max-width: 767px) {
+        ::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+        * {
+            scrollbar-width: none;
+        }
     }
 }
 
